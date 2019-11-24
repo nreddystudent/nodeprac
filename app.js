@@ -1,15 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
 const app = express();
+app.use(bodyParser.urlencoded({extended: false}));
 
-
-app.use('/add-product', (req, res, next) => {
-    console.log('In another middleware');
-    res.send('<h1>Hello from Products</h1>'); 
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+app.use((req, res, next) => {
+    res.status(404).send("404 page not found")
 });
 
-app.use('/', (req, res, next) => {
-    console.log('In another middleware');
-    res.send('<h1>Hello from express</h1>'); 
-});
+
+
+
+
 
 app.listen(8080);
