@@ -8,18 +8,23 @@
     margin: 1rem 0;
 }
 
-.form-control input {
+.form-control input,
+.form-control textarea {
     border: 1px solid blueviolet;
     font: inherit;
     border-radius: 2px;
 }
 
 .form-control input,
-.form-control label {
+.form-control label,
+.form-control textarea {
     display: block;
     width: 100%;
 }
-
+.form-control input:focus,
+.form-control textarea:focus{
+    outline-color: black;
+}
 button {
     font: inherit;
     border: 1px solid blueviolet;
