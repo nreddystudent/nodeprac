@@ -10,10 +10,12 @@ exports.addNewProduct = (req, res, next) => {
 };
 
 exports.showProducts = (req, res, next) => {
-    const products = ProductModel.fetchAll();
-    res.render('shop', {
-        prods: products,
-        pageTitle: 'S hop',
-        path: '/',
+    ProductModel.fetchAll((products) =>{
+        res.render('shop', {
+            prods: products,
+            pageTitle: 'Shop',
+            path: '/',
+        });
     });
+   
 };
