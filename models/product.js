@@ -21,6 +21,7 @@ module.exports = class Product {
 		this.price = price;
 	}
 	save() {
+		this.id = Math.random().toString();
 		const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
 		getProductsFromFile((products) => {
 			products.push(this);
@@ -31,5 +32,12 @@ module.exports = class Product {
 	}
 	static fetchAll(cb) {
 		getProductsFromFile(cb);
+	}
+
+	static findByID(id, cb){
+		getProductsFromFile((products => {
+			const product = products.find(p => p.id === id);
+			cb(product);
+		}))
 	}
 }
