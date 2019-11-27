@@ -8,7 +8,7 @@ exports.addNewProduct = (req, res, next) => {
 	const title = req.body.title;
 	const description = req.body.description;
 	const price = req.body.price;
-	const imgURL = req.body.title;
+	const imgURL = req.body.imgURL;
 
 	var product = new ProductModel(title, imgURL, description, price);
 	product.save();
