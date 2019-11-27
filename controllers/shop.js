@@ -1,7 +1,5 @@
 const ProductModel = require('../models/product');
 const CartModel = require('../models/cart');
-
-
 exports.showProducts = (req, res, next) => {
     ProductModel.fetchAll((products) =>{
         res.render('shop/product-list', {
