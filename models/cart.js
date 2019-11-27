@@ -21,7 +21,7 @@ module.exports = class Cart {
 			if (!err) {
 				cart = JSON.parse(data);
 			}
-			const existProductIndex = cart.products.findIndex(p => (prod => prod.id === id));
+			const existProductIndex = cart.products.findIndex(prod => prod.id === id);
 			const existProduct = cart.products[existProductIndex];
 			let updatedProduct;
 			if (existProduct) {
@@ -34,7 +34,7 @@ module.exports = class Cart {
 				updatedProduct = { id: id, qty: 1 };
 				cart.products = [...cart.products, updatedProduct]
 			}
-			cart.totalPrice = price + cart.totalPrice;
+			cart.totalPrice = cart.totalPrice + +price;
 			fs.writeFile(p, JSON.stringify(cart), (err) => {
 				console.log(err);
 			})

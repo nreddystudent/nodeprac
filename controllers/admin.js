@@ -2,7 +2,7 @@
 const ProductModel = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
-	res.render('admin/add-product', { pageTitle: 'Add Product', path: "/admin/add-product" });
+	res.render('admin/edit-product', { pageTitle: 'Add Product', path: "/admin/add-product", editMode: false});
 };
 exports.addNewProduct = (req, res, next) => {
 	const title = req.body.title;
@@ -13,6 +13,21 @@ exports.addNewProduct = (req, res, next) => {
 	var product = new ProductModel(title, imgURL, description, price);
 	product.save();
 	res.redirect('/');
+};
+
+exports.editProduct = (req, res, next) => {
+	const editMode = req.query.edit;
+	if (!editMode){
+		return res.redirect('/')
+	}
+	ProductModel.findByID(req.params.productId, (product) => {
+		if (!product){
+			return res.redirect('/');
+		}
+		console.log(product);
+		res.render('admin/edit-product', { pageTitle: 'Edit Product', path: "/admin/edit-product", product: product, editMode: editMode });
+	});
+
 };
 
 exports.showProducts = (req, res, next) => {
