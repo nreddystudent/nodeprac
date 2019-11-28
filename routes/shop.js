@@ -9,7 +9,9 @@ router.get('/products', shopController.showProducts);
 
 router.get('/cart', shopController.showCart);
 
+router.post('/cart/delete-item', shopController.postDeleteItem);
 router.post('/cart', shopController.postCart);
+
 
 router.get('/orders', shopController.showOrders);
 
