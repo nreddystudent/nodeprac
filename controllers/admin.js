@@ -54,8 +54,7 @@ exports.deleteProduct = (req, res, next) => {
 	ProductModel.fetchAll((updatedProducts) =>{
 			const index = updatedProducts.findIndex(product => product.id === req.body.productId);
 			updatedProducts.splice(index, 1);
-			// ProductModel.update(updatedProducts);
+			ProductModel.update(updatedProducts);
 			res.redirect('/admin/products');
-		
 	})
 };

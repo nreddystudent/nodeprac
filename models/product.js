@@ -45,6 +45,12 @@ module.exports = class Product {
 		getProductsFromFile(cb);
 	}
 
+	static update(updatedProducts){
+		fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+			console.log(err);
+		});
+	};
+
 	static findByID(id, cb){
 		getProductsFromFile((products => {
 			const product = products.find(p => p.id === id);
