@@ -17,11 +17,23 @@ exports.showProduct = (req, res, next) => {
     });
 };
 exports.showCart = (req, res, next) => {
-        res.render('shop/cart',
-            {
-                pageTitle: "My Cart",
-                path: '/cart',
-            });
+        CartModel.getCart(cart => {
+            ProductModel.fetchAll(products =>{
+                const cartProducts = [];
+                for (product of products){
+                    const CartProductData = cart.products.find(prod => prod.id === product.id);
+                    if (CartProductData){
+                        cartProducts.push({productData: product, qty: CartProductData.qty});
+                    }
+                }
+                res.render('shop/cart',
+                    {
+                        pageTitle: "My Cart",
+                        path: '/cart',
+                        cart: cartProducts
+                    });
+            })
+        })
 };
 
 exports.postCart = (req, res, next) => {

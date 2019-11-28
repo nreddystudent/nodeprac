@@ -7,8 +7,7 @@ const getProductsFromFile = (cb) => {
 	fs.readFile(p, (err, data) => {
 		if (err) {
 			return cb([]);
-		}
-		else {
+		} else {
 			cb(JSON.parse(data));
 		}
 	})
@@ -17,7 +16,10 @@ const getProductsFromFile = (cb) => {
 module.exports = class Cart {
 	static addProduct(id, price) {
 		fs.readFile(p, (err, data) => {
-			let cart = { products: [], totalPrice: 0 };
+			let cart = {
+				products: [],
+				totalPrice: 0
+			};
 			if (!err) {
 				cart = JSON.parse(data);
 			}
@@ -25,13 +27,17 @@ module.exports = class Cart {
 			const existProduct = cart.products[existProductIndex];
 			let updatedProduct;
 			if (existProduct) {
-				updatedProduct = { ...existProduct };
+				updatedProduct = {
+					...existProduct
+				};
 				updatedProduct.qty = updatedProduct.qty + 1;
 				cart.products = [...cart.products];
 				cart.products[existProductIndex] = updatedProduct;
-			}
-			else {
-				updatedProduct = { id: id, qty: 1 };
+			} else {
+				updatedProduct = {
+					id: id,
+					qty: 1
+				};
 				cart.products = [...cart.products, updatedProduct]
 			}
 			cart.totalPrice = cart.totalPrice + +price;
@@ -47,7 +53,9 @@ module.exports = class Cart {
 				return;
 			}
 			const fileContent = JSON.parse(data);
-			const updatedCart = { ...fileContent };
+			const updatedCart = {
+				...fileContent
+			};
 			const product = updatedCart.products.find(prod => prod.id === id);
 			const productQty = product.qty;
 			updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
@@ -56,8 +64,15 @@ module.exports = class Cart {
 				console.log(err);
 			});
 		});
-
 	}
-
-
-} 
+	static getCart(cb) {
+		fs.readFile(p, (err, data) => {
+			const cart = JSON.parse(data);
+			if (err) {
+				cb(null);
+			} else {
+				cb(cart);
+			}
+		});
+	}
+}
