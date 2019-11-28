@@ -30,6 +30,10 @@ exports.editProduct = (req, res, next) => {
 
 };
 
+exports.updateProduct = (res, req, next) => {
+	
+}
+
 exports.showProducts = (req, res, next) => {
 	ProductModel.fetchAll((products) => {
 		res.render('admin/products', {

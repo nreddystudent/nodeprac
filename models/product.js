@@ -14,7 +14,8 @@ const getProductsFromFile = (cb) => {
 	})
 }
 module.exports = class Product {
-	constructor(title, imgURL, description, price) {
+	constructor(id, title, imgURL, description, price) {
+		this.id = id;
 		this.title = title;
 		this.imgURL = imgURL;
 		this.description = description;
@@ -24,6 +25,9 @@ module.exports = class Product {
 		this.id = Math.random().toString();
 		const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
 		getProductsFromFile((products) => {
+			if (this.id){
+				
+			}
 			products.push(this);
 			fs.writeFile(p, JSON.stringify(products), (err) => {
 				console.log(err);
