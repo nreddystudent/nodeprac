@@ -16,4 +16,6 @@ block content
 			.form-control
 				label(for="imgURL") imgURL 
 				input(type="text" name="imgURL" id="imgURL" value=`${(editMode === 'true') ? product.imgURL : ''}`)
+			if editMode === 'true'
+				input(type="hidden", name="productId" value=`${product.id}`)
 			button(type="submit") #{(editMode === 'true') ? 'Update Product' : 'Add Product'}

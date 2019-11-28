@@ -10,7 +10,7 @@ exports.addNewProduct = (req, res, next) => {
 	const price = req.body.price;
 	const imgURL = req.body.imgURL;
 
-	var product = new ProductModel(title, imgURL, description, price);
+	var product = new ProductModel(null, title, imgURL, description, price);
 	product.save();
 	res.redirect('/');
 };
@@ -24,15 +24,21 @@ exports.editProduct = (req, res, next) => {
 		if (!product){
 			return res.redirect('/');
 		}
-		console.log(product);
 		res.render('admin/edit-product', { pageTitle: 'Edit Product', path: "/admin/edit-product", product: product, editMode: editMode });
 	});
 
 };
 
-exports.updateProduct = (res, req, next) => {
-	
-}
+exports.updateProduct = (req, res, next) => {
+	const productId = req.body.productId;
+	const updatedTitle = req.body.title;
+	const updatedDescription = req.body.description;
+	const updatedImgURL = req.body.imgURL;
+	const updatedPrice = req.body.price;
+	var updatedProduct = new ProductModel(productId, updatedTitle, updatedImgURL, updatedDescription, updatedPrice);
+	updatedProduct.save();
+	res.redirect('/admin/products');
+};
 
 exports.showProducts = (req, res, next) => {
 	ProductModel.fetchAll((products) => {
