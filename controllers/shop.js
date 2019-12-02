@@ -18,7 +18,6 @@ exports.showProduct = (req, res, next) => {
     const prodId = req.params.productId;
     ProductModel.findByPk(prodId)
     .then((product) => {
-        console.log(product);
         res.render('shop/product-details', { pageTitle: "Product Details", product: product, path: "/products" });
     })
     .catch(err =>{
