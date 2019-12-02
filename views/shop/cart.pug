@@ -11,7 +11,7 @@ block content
 					li
 						p #{p.productData.title + '(' + p.qty + ')'}
 						form(action="/cart/delete-item" method="POST")
-							input(type="hidden" name="prod" value=`${p.productData}`)
+							input(type="hidden" name="prodId" value=`${p.productData.id}`)
 							button.btn(type="submit") Delete Item
 		else
 			h1 No Products In Cart 

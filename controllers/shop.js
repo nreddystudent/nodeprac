@@ -45,11 +45,12 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.postDeleteItem = (req, res, next) => {
-    const prodId = req.body.prod.id;
-    console.log(req.body);
-    const price = req.body.prod.price;
-    CartModel.deleteProduct(prodId, price);
-    res.redirect('/cart'); 
+    const prodId = req.body.prodId;
+    ProductModel.findByID(prodId, (product =>{
+        const price = product.price;
+        CartModel.deleteProduct(prodId, price);
+        res.redirect('/cart'); 
+    }))
 }
 
 exports.showOrders = (req, res, next) => {
