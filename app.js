@@ -1,17 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+// const shopRoutes = require('./routes/shop');
 const path = require('path');
 const app = express();
 const errorController = require('./controllers/errors');
-const sequelize = require('./helpers/database');
-const Product = require('./models/product');
-const User = require('./models/user');
-const Cart = require('./models/cart');
-const CartItem = require('./models/cart-item');
-const Order = require('./models/order');
-const OrderItem = require('./models/order-items');
+const MongoConnect = require('./helpers/database');
+
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
@@ -21,57 +16,17 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
-	User.findByPk(1)
-		.then(user => {
-			req.user = user;
-			next();
-		})
+	// User.findByPk(1)
+	// 	.then(user => {
+	// 		req.user = user;
+	// 		next();
+	// 	})
 })
 app.use('/admin', adminRoutes.routes);
-app.use(shopRoutes);
+// app.use(shopRoutes);
 
 app.use(errorController.display404);
 
-Product.belongsTo(User, {
-	constraints: true,
-	onDelete: 'CASCADE'
-});
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, {
-	through: CartItem
-});
-Product.belongsToMany(Cart, {
-	through: CartItem
-});
-Order.belongsTo(User);
-User.hasMany(Order);
-Order.belongsToMany(Product, {through : OrderItem});
-
-
-sequelize.sync()
-// sequelize.sync({
-// 		force: true
-// 	})	
-	.then(result => {
-		return User.findByPk(1)
-	})
-	.then(user => {
-		if (!user){
-			return User.create({
-				name: "nolin",
-				email: "nolin.reddy@gmail.com"
-			});
-		}
-		return user;
-	})
-	.then(user => {
-		 return user.createCart();
-	})
-	.then(cart => {
-		app.listen(8080);
-	})
-	.catch(err => {
-		console.log(err);
-	});
+MongoConnect(() =>{
+	app.listen(8080);
+})
