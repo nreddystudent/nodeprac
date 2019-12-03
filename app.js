@@ -5,7 +5,7 @@ const adminRoutes = require('./routes/admin');
 const path = require('path');
 const app = express();
 const errorController = require('./controllers/errors');
-const MongoConnect = require('./helpers/database');
+const MongoConnect = require('./helpers/database').MongoConnect;
 
 
 app.set('view engine', 'pug');
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 	// User.findByPk(1)
 	// 	.then(user => {
 	// 		req.user = user;
-	// 		next();
+			next();
 	// 	})
 })
 app.use('/admin', adminRoutes.routes);
