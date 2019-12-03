@@ -6,10 +6,12 @@ const path = require('path');
 const app = express();
 const errorController = require('./controllers/errors');
 const sequelize = require('./helpers/database');
-const Products = require('./models/product');
+const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-items');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
@@ -30,24 +32,28 @@ app.use(shopRoutes);
 
 app.use(errorController.display404);
 
-Products.belongsTo(User, {
+Product.belongsTo(User, {
 	constraints: true,
 	onDelete: 'CASCADE'
 });
-User.hasMany(Products);
+User.hasMany(Product);
 User.hasOne(Cart);
 Cart.belongsTo(User);
-Cart.belongsToMany(Products, {
+Cart.belongsToMany(Product, {
 	through: CartItem
 });
-Products.belongsToMany(Cart, {
+Product.belongsToMany(Cart, {
 	through: CartItem
 });
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, {through : OrderItem});
+
 
 sequelize.sync()
 // sequelize.sync({
 // 		force: true
-// 	})
+// 	})	
 	.then(result => {
 		return User.findByPk(1)
 	})

@@ -3,4 +3,13 @@ block styles
 	
 block content
 	main
-		h1 Nothing Here! 
+		if(orders.length <= 0)
+			h1 Nothing Here!
+		else
+			ul
+				each order in orders
+					li
+						h1 #{order.id}
+						ul
+							each product in order.products 
+								li #{product.title}()#{product.orderItem.quantity}
