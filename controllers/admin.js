@@ -9,11 +9,12 @@ exports.addNewProduct = (req, res, next) => {
 	const description = req.body.description;
 	const price = req.body.price;
 	const imgURL = req.body.imgURL;
-	ProductModel.create({
-		title: title,
-		price: price,
-		imgURL: imgURL,
-		description: description
+	req.user.createProduct({
+			title: title,
+			price: price,
+			imgURL: imgURL,
+			description: description,
+			userId: req.user.id
 	}).then(result =>{
 		res.redirect('/admin/products');
 	})
@@ -27,8 +28,10 @@ exports.editProduct = (req, res, next) => {
 	if (!editMode) {
 		return res.redirect('/')
 	}
-	ProductModel.findByPk(req.params.productId)
-	.then((product) => {
+	req.user.getProducts({where: {id: req.params.productId}})
+	// ProductModel.findByPk(req.params.productId)
+	.then((products) => {
+		const product = products[0];
 		if (!product) {
 			return res.redirect('/');
 		}
@@ -63,9 +66,9 @@ exports.updateProduct = (req, res, next) => {
 		console.log(err);
 	});
 };
-
+	
 exports.showProducts = (req, res, next) => {
-	ProductModel.findAll()
+	req.user.getProducts()
 	.then(products => {
 		res.render('admin/products', {
 			prods: products,
@@ -84,7 +87,7 @@ exports.deleteProduct = (req, res, next) => {
 		product.destroy() ;
 	})
 	.then(result => {
-		console.log("destroyeed product");
+		console.log("destroyed product");
 		res.redirect('/admin/products');
 	})
 	.catch(err =>{
