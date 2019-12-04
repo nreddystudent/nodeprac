@@ -30,16 +30,19 @@ exports.showProduct = (req, res, next) => {
 };
 exports.showCart = (req, res, next) => {
     req.user.getCart()
-        .then(cart => {
-            return cart.getProducts();
-        }).then(products => {
-            res.render('shop/cart', {
-                pageTitle: "My Cart",
-                path: '/cart',
-                cart: products
-            });
+    .then(cartData =>{
+        console.log(cartData);
+    })
+        // .then(cart => {
+        //     return cart.getProducts();
+        // }).then(products => {
+        //     res.render('shop/cart', {
+        //         pageTitle: "My Cart",
+        //         path: '/cart',
+        //         cart: products
+        //     });
 
-        }).catch(err => console.log(err))
+        // }).catch(err => console.log(err))
 };
 
 exports.postCart = (req, res, next) => {

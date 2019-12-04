@@ -46,7 +46,6 @@ class Product {
 			})
 			.next()
 			.then(product => {
-				console.log(product);
 				return product;
 			})
 			.catch(err => console.log(err))
