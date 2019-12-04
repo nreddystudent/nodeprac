@@ -1,5 +1,3 @@
-const mongodb = require('mongodb');
-const ObjectId = mongodb.ObjectId;
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -14,7 +12,7 @@ exports.addNewProduct = (req, res, next) => {
 	const description = req.body.description;
 	const price = req.body.price;
 	const imgURL = req.body.imgURL;
-	const product = new Product(title, price, description, imgURL);
+	const product = new Product(title, price, description, imgURL, null, req.user); 
 	product.save()
 		.then(result => {
 			res.redirect('/admin/products');
@@ -51,7 +49,7 @@ exports.updateProduct = (req, res, next) => {
 	const updatedDescription = req.body.description;
 	const updatedImgURL = req.body.imgURL;
 	const updatedPrice = req.body.price;
-	const product = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImgURL, new ObjectId(productId));
+	const product = new Product(updatedTitle, updatedPrice, updatedDescription, updatedImgURL, productId);
 	product.save().then(result => {
 			console.log("updated Product");
 			res.redirect('/admin/products');
@@ -75,16 +73,13 @@ exports.showProducts = (req, res, next) => {
 		});
 };
 
-// exports.deleteProduct = (req, res, next) => {
-// 	ProductModel.findByPk(req.body.productId)
-// 	.then(product =>{
-// 		product.destroy() ;
-// 	})
-// 	.then(result => {
-// 		console.log("destroyed product");
-// 		res.redirect('/admin/products');
-// 	})
-// 	.catch(err =>{
-// 		console.log(err);
-// 	});
-// };
+exports.deleteProduct = (req, res, next) => {
+	Product.deleteById(req.body.productId)
+	.then(() => {
+		console.log("destroyed product");
+		res.redirect('/admin/products');
+	})
+	.catch(err =>{
+		console.log(err);
+	});
+};
