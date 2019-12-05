@@ -13,7 +13,6 @@ class Product {
 		const db = getDb();
 		let dbOp;
 		if (this._id) {
-			console.log("this", this);
 			dbOp = db.collection('products').updateOne({
 				_id: this._id
 			}, {
