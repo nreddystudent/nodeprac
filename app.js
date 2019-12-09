@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 const path = require('path');
 const app = express();
 const errorController = require('./controllers/errors');
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 })
 app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.display404);
 

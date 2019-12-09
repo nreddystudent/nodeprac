@@ -102,7 +102,8 @@ exports.showOrders = (req, res, next) => {
             res.render('shop/orders', {
                 pageTitle: "My Orders",
                 path: '/cart',
-                orders: orders
+                orders: orders,
+                isAuthenticated : req.isAuthenticated
             });
         })
         .catch(err => console.log(err))
@@ -111,13 +112,15 @@ exports.showOrders = (req, res, next) => {
 exports.showCheckout = (req, res, next) => {
     res.render('shop/checkout', {
         pageTitle: "Checkout",
-        path: '/checkout'
+        path: '/checkout',
+        isAuthenticated : req.isAuthenticated
     });
 };
 
 exports.showDetails = (req, res, next) => {
     res.render('shop/product-details', {
-        pageTitle: "List Product"
+        pageTitle: "List Product",
+        isAuthenticated : req.isAuthenticated
     });
 }
 
@@ -127,7 +130,8 @@ exports.getIndex = (req, res, next) => {
             res.render('shop/index', {
                 prods: products,
                 pageTitle: 'Shop',
-                path: '/'
+                path: '/',
+                isAuthenticated : req.isAuthenticated
             });
         })
         .catch(err => {
