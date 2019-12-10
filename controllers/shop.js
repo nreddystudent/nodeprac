@@ -21,8 +21,7 @@ exports.showProduct = (req, res, next) => {
             res.render('shop/product-details', {
                 pageTitle: "Product Details",
                 product: product,
-                path: "/products",
-		        isAuthenticated: req.session.isLoggedIn
+                path: "/products"
             });
         })
         .catch(err => {
@@ -35,9 +34,7 @@ exports.showCart = (req, res, next) => {
         res.render('shop/cart', {
             pageTitle: "My Cart",
             path: '/cart',
-            cart: products,
-		    isAuthenticated: req.session.isLoggedIn
-
+            cart: products
         });
 
     }).catch(err => console.log(err))
@@ -101,12 +98,10 @@ exports.postDeleteItem = (req, res, next) => {
 exports.showOrders = (req, res, next) => {
     req.user.getOrders()
         .then(orders => {
-            console.log(orders[0].items);
             res.render('shop/orders', {
                 pageTitle: "My Orders",
-                path: '/cart',
-                orders: orders,
-                isAuthenticated: req.session.isLoggedIn
+                path: '/orders',
+                orders: orders
             });
         })
         .catch(err => console.log(err))
@@ -115,15 +110,13 @@ exports.showOrders = (req, res, next) => {
 exports.showCheckout = (req, res, next) => {
     res.render('shop/checkout', {
         pageTitle: "Checkout",
-        path: '/checkout',
-		isAuthenticated: req.session.isLoggedIn
+        path: '/checkout'
     });
 };
 
 exports.showDetails = (req, res, next) => {
     res.render('shop/product-details', {
-        pageTitle: "List Product",
-		isAuthenticated: req.session.isLoggedIn
+        pageTitle: "List Product"
     });
 }
 
@@ -133,8 +126,7 @@ exports.getIndex = (req, res, next) => {
             res.render('shop/index', {
                 prods: products,
                 pageTitle: 'Shop',
-                path: '/',
-                isAuthenticated: req.session.isLoggedIn
+                path: '/'
             });
         })
         .catch(err => {

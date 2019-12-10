@@ -11,6 +11,9 @@ const User = require('./models/user');
 const session = require('express-session');
 const mongdbStore = require('connect-mongodb-session')(session);
 const MONGODB_URI = 'mongodb+srv://root:9021@cluster0-rhmgm.mongodb.net/shop'
+const csrf = require('csurf');
+const flash = require('connect-flash');
+const csrfProtection = csrf();
 const store = new mongdbStore({
 	uri: MONGODB_URI,
 	collection: 'sessions'
@@ -26,7 +29,9 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false,
 	store: store
-}))
+}));
+app.use(csrfProtection);
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
 	if (!req.session.user) {
@@ -34,10 +39,15 @@ app.use((req, res, next) => {
 	}
 	User.findById(req.session.user._id)
 		.then(user => {
-			req.user = new User(user.name, user.email, user.cart, user._id);
+			req.user = new User(user.username, user.email, user.password, user.cart, user._id);
 			next();
 		})
 		.catch(err => console.log(err));
+});
+app.use((req, res, next) => {
+	res.locals.isAuthenticated = req.session.isLoggedIn;
+	res.locals.csrfToken = req.csrfToken();
+	next();
 })
 app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);

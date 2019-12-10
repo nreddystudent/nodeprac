@@ -2,14 +2,16 @@ const mongodb = require('mongodb');
 const getDb = require('../helpers/database').getDb;
 const ObjectId = mongodb.ObjectId;
 class User {
-	constructor(username, email, cart, id) {
+	constructor(username, password, email, cart, id) {
 		this.username = username;
+		this.password = password;
 		this.email = email;
 		this.cart = cart;
 		this._id = id;
 	}
 	getCart() {
 		const db = getDb();
+		console.log(this);
 		const prodIds = this.cart.items.map(i => {
 			return i.productId;
 		});
@@ -122,6 +124,12 @@ class User {
 		return db.collection('users').findOne({
 			_id: new ObjectId(userId)
 		});
+	}
+	static findByField(field , data) {
+		const db = getDb();
+		var arr = {};
+		arr[field] = data;
+		return db.collection('users').findOne(arr);
 	}
 }
 

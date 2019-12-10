@@ -6,6 +6,9 @@ block content
 	main
 		form.product-form(action="/signup" method="POST")
 			.form-control
+				label(for="username") Username
+				input(type="text" name="username" id="username")
+			.form-control
 				label(for="email") Email
 				input(type="text" name="email" id="email")
 			.form-control
@@ -14,4 +17,5 @@ block content
 			.form-control
 				label(for="confirm_password") Confirm Password 
 				input(type="confirm_password" name="confirm_password" id="confirm_password")
+			input(type="hidden" name="_csrf" value=`${csrfToken}`)
 			button(type="submit") Sign Up
