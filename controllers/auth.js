@@ -154,8 +154,35 @@ exports.getNewPassword = ((req, res, next) => {
 				pageTitle: "Change Password",
 				path: '/new-password',
 				errorMessage: req.flash('error'),
-				userId: user._id.toString()
+				userId: user._id.toString(),
+				passwordToken: token
 			});
 		})
 		.catch(err => console.log(err));
-})
+});
+
+exports.postNewPassword = (req, res, next) => {
+	const newPassword = req.body.password;
+	const userId = req.body.userId;
+	const passwordToken = req.body.token;
+	const token = req.params.token;
+	let resetUser
+	User.findById(userId)
+		.then(user => {
+			resetUser = user;
+			if (user.resetTokenExpiration < Date.now()) {
+				req.flash('error', 'link has expired');
+				return res.redirect('/reset');
+			}
+			return bcrypt.hash(newPassword, 12);
+		})
+		.then((password) => {
+			resetUser.password = password;
+			resetUser.resetToken = undefined;
+			resetUser.resetTokenExpiration = undefined;
+			return User.update(resetUser)
+		}).then((result) => {
+			return res.redirect('/login');
+		})
+		.catch(err => console.log(err));
+}

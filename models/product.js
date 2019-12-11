@@ -49,14 +49,25 @@ class Product {
 			})
 			.catch(err => console.log(err))
 	}
-	static deleteById(id){
+	static deleteById(id, userId){
 		const db = getDb();
-		return db.collection('products').deleteOne({_id: new mongodb.ObjectId(id)})
+		return this.findById(id)
+		.then((product) => {
+			return db.collection('products').deleteOne({_id: new mongodb.ObjectId(id), userId: userId});
+		})
 		.then(result =>{
 			console.log('deleted');
 		})
-
 		.catch(err => console.log(err));
+	}
+	static findByUser(userId){
+		const db = getDb();
+		return db.collection('products').find({userId: userId}).toArray()
+			.then(products => {
+				console.log(products);
+				return products;
+			})
+			.catch(err => console.log(err))
 	}
 }
 module.exports = Product;
