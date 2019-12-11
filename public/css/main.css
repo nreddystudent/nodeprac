@@ -88,3 +88,17 @@ main {
   .card__actions a {
       margin: 0 0.25rem;
   }
+  .user-message{
+    margin: auto;
+    width: 90%; 
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: rgba(6, 143, 255, 0.479);
+    text-align: center;
+    width: 30rem;
+  }
+  .user-message--error{
+    background-color: red;
+    background-color: rgba(170, 21, 21, 0.603);
+  }

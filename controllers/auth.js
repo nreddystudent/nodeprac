@@ -10,7 +10,8 @@ exports.getLogin = (req, res, next) => {
 exports.getSignUp = (req, res, next) => {
 	res.render('auth/signup', {
 		pageTitle: "Sign Up",
-		path: '/signup'
+		path: '/signup',
+		errorMessage: req.flash('error')
 	});
 };
 exports.postSignUp = (req, res, next) => {
@@ -21,7 +22,11 @@ exports.postSignUp = (req, res, next) => {
 	User.findByField('email', email)
 		.then(user => {
 			if (user) {
-				return res.redirect('/signup');
+				req.flash('error', 'E-mail already exists. Please pick a different one.');
+				return req.session.save((err =>{
+					console.log(err);
+					return res.redirect('/signup');
+				}));
 			}
 			return bcrypt.hash(password, 12)
 				.then(hashedPassword => {
@@ -43,9 +48,12 @@ exports.postLogin = (req, res, next) => {
 	const password = req.body.password;
 	User.findByField('email', email)
 		.then(user => {
-			if (!user){
+			if (!user || !password){
 				req.flash('error', 'Invalid email or password');
-				return res.redirect('/login');
+				return req.session.save((err =>{
+					console.log(err);
+					return res.redirect('/login');
+				}))
 			}
 			bcrypt.compare(password, user.password)
 			.then(doMatch =>{
@@ -57,7 +65,11 @@ exports.postLogin = (req, res, next) => {
 						res.redirect('/');
 					})
 				}
-				res.redirect('/login')
+				req.flash('error', 'Invalid email or password');
+				return req.session.save((err =>{
+					console.log(err);
+					return res.redirect('/login');
+				}));
 			})
 			.catch(err => console.log(err));
 		})

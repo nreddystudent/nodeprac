@@ -5,7 +5,8 @@ block styles
 block content 
 	main
 		if (errorMessage)
-			h1.error #{locals.errorMessage}
+			each error in errorMessage
+				h1.user-message--error.user-message #{error}
 		form.product-form(action="/login" method="POST")
 			.form-control
 				label(for="email") Email
