@@ -7,14 +7,9 @@ block content
 		if (errorMessage)
 			each error in errorMessage
 				h1.user-message--error.user-message #{error}
-		form.product-form(action="/login" method="POST")
+		form.product-form(action="/reset" method="POST")
 			.form-control
 				label(for="email") Email
 				input(type="text" name="email" id="email")
-			.form-control
-				label(for="password") password 
-				input(type="text" name="password" id="password")
 			input(type="hidden" name="_csrf" value=`${csrfToken}`)
-			button(type="submit") Login
-		.centered
-			a(href="/reset") Reset Password
+			button(type="submit") Reset password
