@@ -2,13 +2,12 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth');
-const Validity = require('../validator/myValidator');
-console.log(Validity.check("");
+const Validity = require('../validator/myValidator').check;
 router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 router.post('/logout', authController.postLogout);
 
-router.get('/signup', authController.getSignUp);
+router.get('/signup', Validity('email').isEmail().next() ,authController.getSignUp);
 router.post('/signup', authController.postSignUp);
 
 

@@ -1,10 +1,14 @@
 const getDb = require('../helpers/database').getDb;
-var Validity = {
-	check: (name)=>{
+class Validity{
+	constructor(name, req, res, next){
 		this.name = name;
-	},
-	isEmail: (req, res, next) => {
-		let data = req.body[this.name];
+		this.req = req.body;
+		this.res = res;
+		this.next = next;
+	}
+	isEmail = () => {
+		console.log(this.req);
+		let data = this.req[this.name];
 		if (!data.match(/@.*\.com/)){
 			req.flash('error', 'Email Address Invalid');
 			return req.session.save((err) =>{
@@ -12,9 +16,9 @@ var Validity = {
 				return res.redirect('/signup');
 			})
 		}
-		next();
-	},
-	isAlphaNumeric: (req, res, next) =>{
+		
+	}
+	isAlphaNumeric = () =>{
 		let data = req.body[this.name];
 		if (!data.match(/^(?=.*[a-zA-Z])(?=.*[0-9])/)){
 			req.flash('error', 'Password Invalid');
@@ -24,18 +28,23 @@ var Validity = {
 				return res.redirect('/signup');
 			})
 		}
-		next();
-	},
-	isEmpty: (req, res, next) => {
+	}
+	isEmpty = () => {
 		let data = req.body[this.name];
 		if (!data){
 			console.log('errror is empty');
 		}
-	},
-	isLen: (req, res, next) =>{
+	}
+	isLen = () =>{
 
+	}
+	next = () =>{
+		next();
 	}
 
 }
 
-module.exports = Validity;
+module.exports.check = (name) =>{
+	return 
+	return new Validity()
+}
