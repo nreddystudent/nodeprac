@@ -1,29 +1,30 @@
 const getDb = require('../helpers/database').getDb;
-class Validity{
-	constructor(name, req, res, next){
-		this.name = name;
+class Validity {
+	constructor(req, res, next) {
 		this.req = req.body;
 		this.res = res;
 		this.next = next;
+		console.log("heeeeere");
+		console.log(this);
 	}
-	isEmail = () => {
-		console.log(this.req);
+	isEmail(req, res, next){
 		let data = this.req[this.name];
-		if (!data.match(/@.*\.com/)){
+		if (!data.match(/@.*\.com/)) {
 			req.flash('error', 'Email Address Invalid');
-			return req.session.save((err) =>{
+			req.session.save((err) => {
 				console.log(err);
 				return res.redirect('/signup');
 			})
 		}
-		
+		console.log(this);
+		return this.next;
 	}
-	isAlphaNumeric = () =>{
+	isAlphaNumeric() {
 		let data = req.body[this.name];
-		if (!data.match(/^(?=.*[a-zA-Z])(?=.*[0-9])/)){
+		if (!data.match(/^(?=.*[a-zA-Z])(?=.*[0-9])/)) {
 			req.flash('error', 'Password Invalid');
 			req.body.ValidateErrors.push('Password Invalid');
-			return req.session.save((err) =>{
+			return req.session.save((err) => {
 				console.log(err);
 				return res.redirect('/signup');
 			})
@@ -31,20 +32,20 @@ class Validity{
 	}
 	isEmpty = () => {
 		let data = req.body[this.name];
-		if (!data){
+		if (!data) {
 			console.log('errror is empty');
 		}
 	}
-	isLen = () =>{
+	isLen = () => {
 
 	}
-	next = () =>{
-		next();
+	next = () => {
+		console.log("here");
+		return this.next;
 	}
 
 }
 
-module.exports.check = (name) =>{
-	return 
-	return new Validity()
-}
+module.exports.check = (req, res, next) => {
+	return new Validity(req, res, next);
+};
